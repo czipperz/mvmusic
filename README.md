@@ -36,12 +36,12 @@ Options, files, and directories can be in any order.
 ### Options
 * `-n` `--nono` - print out what will be done and don't do it.
 * `-p <playlist>` `--playlist <playlist>` - set the playlist to insert
-  songs into.  Warns user if file provided doesn't have `.m3u`
-  extension.
+  songs into.  Warns the user if the file provided doesn't have a
+  `.m3u` extension.
 
 ### Arguments
 With no arguments, `mvmusic` will scan the downloads directory for
 `.mp3` files.
 
 With arguments, `mvmusic` will only work on the directories and files
-provided.  It will scan the directories for all `.mp3` files.
+provided.  It will scan the directories given for all `.mp3` files.
