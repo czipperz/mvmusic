@@ -14,6 +14,7 @@ This program does the following things:
 8. Sort the playlist file.
 9. If the file name isn't a line in the playlist file, add it in the
    correct alphabetical position.
+10. Save the playlist file.
 
 ## Installation
 ### Prerequisites
