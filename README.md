@@ -34,9 +34,9 @@ Options, files, and directories can be in any order.
 
 ### Options
 * `-n` `--nono` - print out what will be done and don't do it.
-* `-p hi.m3u` `--playlist hi.m3u` - set the playlist to insert songs
-                                    into.  Warns user if file provided
-                                    doesn't have `.m3u` extension.
+* `-p <playlist>` `--playlist <playlist>` - set the playlist to insert
+  songs into.  Warns user if file provided doesn't have `.m3u`
+  extension.
 
 ### Arguments
 With no arguments, `mvmusic` will scan the downloads directory for
