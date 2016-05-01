@@ -27,6 +27,7 @@ This program does the following things:
 * `cd` into the clone.
 * `./configure`
 * `make`
+* `make install`
 
 ## Usage
 `./mvmusic [options] [files] [directories]`

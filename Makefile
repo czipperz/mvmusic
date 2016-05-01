@@ -14,7 +14,7 @@ srcobjects = $(shell find ${src} -name '*.cc' -not -name 'main.cc' | perl -pe 's
 testobjects = $(shell find ${test} -name '*.cc' | perl -pe 's|${test}/(.*)\.cc|${testout}/$$1.o|')
 benchobjects = $(shell find ${bench} -name '*.cc' | perl -pe 's|${bench}/(.*)\.cc|${benchout}/$$1.o|')
 
-.PHONY: all test bench
+.PHONY: all test bench clean install
 
 all: out/main.o ${srcobjects}
 	${CXX} -o mvmusic $^ ${LDFLAGS}
@@ -26,6 +26,14 @@ test: ${testobjects} ${srcobjects}
 bench: ${benchobjects} ${srcobjects}
 	${CXX} -o ${benchout}/out $^ ${LDFLAGS}
 	./${benchout}/out
+
+clean:
+	rm -Rf ${srcout} ${testout} ${benchout}
+	@printf "Recreate out directories so normal \`make\` works.\n"
+	mkdir ${srcout} ${testout} ${benchout}
+
+install: all
+	cp mvmusic /bin/
 
 ${srcout}/main.o: ${src}/main.cc
 	${CXX} ${CXXFLAGS} -o $@ -c $<
