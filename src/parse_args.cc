@@ -54,12 +54,12 @@ void parse_args(int argc, char** argv, vector<path>& files,
                    strcmp(str, "--playlist") == 0) {
             if (argi + 1 == argc) {
                 fprintf(stderr, "Playlist flag `%s` detected without "
-                                "appropriate playlist.\n",
+                                "appropriate playlist.\n\n",
                         str);
                 exit(EXIT_FAILURE);
             } else if (set_playlist) {
                 fprintf(stderr, "Already set playlist to `%s`, can't "
-                                "set it again to `%s`\n",
+                                "set it again to `%s`.\n\n",
                         playlist.c_str(), str);
                 exit(EXIT_FAILURE);
             } else {
