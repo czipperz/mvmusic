@@ -69,8 +69,9 @@ void parse_args(int argc, char** argv, vector<path>& files,
                 // if not .m3u file
                 if (playlist.size() < 4) {
                 not_m3u_file:
-                    fprintf(stderr, "Playlist specified `%s` is not "
-                                    "a .m3u file.\n",
+                    fprintf(stderr,
+                            "Warning: Playlist specified `%s` is not "
+                            "a .m3u file.\n",
                             playlist.c_str());
                 } else {
                     auto rb = playlist.rbegin();
