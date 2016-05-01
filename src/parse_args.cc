@@ -5,6 +5,7 @@
 #include "env.hh"
 #include "parse_args.hh"
 #include "globals.hh"
+#include "usage.hh"
 
 using namespace std;
 using namespace boost::filesystem;
@@ -42,6 +43,10 @@ void parse_args(int argc, char** argv, vector<path>& files,
                 read_manual = true;
             }
             break;
+        } else if (strcmp(str, "-h") == 0 ||
+                   strcmp(str, "--help") == 0) {
+            usage(argv[-1]);
+            exit(EXIT_SUCCESS);
         } else if (strcmp(str, "-n") == 0 ||
                    strcmp(str, "--nono") == 0) {
             NONO = true;
