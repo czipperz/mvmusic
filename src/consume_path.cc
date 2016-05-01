@@ -330,10 +330,24 @@ void Consumer::_sorted_insert_song_(std::string str) {
 }
 
 Consumer::~Consumer() {
-    if (_write_to_file_ && !NONO) {
-        std::ofstream file(_playlist_file_);
-        for (const auto& s : _playlist_lines_) {
-            file << s << '\n';
+    if (_write_to_file_) {
+        if (!NONO) {
+            std::ofstream file(_playlist_file_);
+            for (const auto& s : _playlist_lines_) {
+                file << s << '\n';
+            }
+            if (system("mpc -q") == 0) {
+                system("mpc -q clear");
+                path pf = _playlist_file_;
+                string pl =
+                    pf.filename().replace_extension().string();
+                system(("mpc -q load " + pl).c_str());
+            }
+        } else {
+            printf("$ mpc clear\n");
+            path pf = _playlist_file_;
+            string pl = pf.filename().replace_extension().string();
+            printf("$ mpc load %s\n", pl.c_str());
         }
     }
 }

@@ -15,12 +15,20 @@ This program does the following things:
 9. If the file name isn't a line in the playlist file, add it in the
    correct alphabetical position.
 10. Save the playlist file.
+11. If the command `mpc` works, run `mpc clear` and `mpc load
+    <playlist>` (reload the MPD playlist with the one provided).
 
 ## Installation
-### Prerequisites
-* `taglib`
-* `boost`
+### Dependencies
+* `taglib` - change song metadata
+* `boost` - specifically Boost.Filesystem and Boost.System is needed.
 * `pthread` (preinstalled on most linux systems)
+* `g++` - the GNU C++ compiler.  If you wish to use a different
+  compiler, for example clang, invoke make with `CXX=clang++`.
+
+#### Optional Dependencies
+* `mpc` - terminal based MPD client.  If this exists, `mvmusic` will
+  reload the MPD playlist as the one provided.
 
 ### Shell
 * Clone the repository.
