@@ -44,7 +44,7 @@ ${srcout}/%.o: ${src}/%.cc ${src}/%.hh
 ${testout}/test_main.o: ${test}/test_main.cc
 	${CXX} ${CXXFLAGS} -o $@ -c $<
 
-${testout}/%.o: ${test}/%.cc ${test}/%.hh
+${testout}/%.o: ${test}/%.cc
 	${CXX} ${CXXFLAGS} -o $@ -c $<
 
 ${benchout}/bench_main.o: ${bench}/bench_main.cc

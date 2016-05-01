@@ -9,10 +9,10 @@
 using namespace std;
 using namespace boost::filesystem;
 
-static int
+int
 find_feat(string::iterator bstring, string::iterator estring) {
     // bounds check for ft./Ft.
-    if (bstring + 3 >= estring) {
+    if (bstring + 2 >= estring) {
         return 0;
     }
     if (bstring[0] == 'f' || bstring[0] == 'F') {
@@ -21,7 +21,7 @@ find_feat(string::iterator bstring, string::iterator estring) {
         }
 
         // bounds check for feat./Feat.
-        if (bstring + 5 >= estring) {
+        if (bstring + 4 >= estring) {
             return 0;
         }
         if (bstring[1] == 'e' && bstring[2] == 'a' &&
@@ -32,9 +32,9 @@ find_feat(string::iterator bstring, string::iterator estring) {
     return 0;
 }
 
-static string fix_feat_delim(const string::iterator bstring,
-                             const string::iterator estring,
-                             const char odelim, const char cdelim) {
+string fix_feat_delim(const string::iterator bstring,
+                      const string::iterator estring,
+                      const char odelim, const char cdelim) {
     auto istring = find(bstring, estring, odelim);
     if (istring == estring || /* !!! */ ++istring == estring) {
         return {bstring, estring};
@@ -59,7 +59,7 @@ static string fix_feat_delim(const string::iterator bstring,
     return {bstring, estring};
 }
 
-static string
+string
 fix_feat_nodelim(string::iterator bstring, string::iterator estring) {
     auto istring = bstring;
     while (istring != estring) {
@@ -109,8 +109,8 @@ fix_feat(string::iterator istring, string::iterator estring) {
     return fnone;
 }
 
-static void remove_genre(string::iterator& istring,
-                         const string::iterator& estring) {
+void remove_genre(string::iterator& istring,
+                  const string::iterator& estring) {
     // remove genre: s|^\[.*\]( -)? ||
     if (*istring == '[') {
         do {
@@ -130,9 +130,9 @@ static void remove_genre(string::iterator& istring,
     }
 }
 
-static void
-remove_trailing_tags(string& no_slashes, string::iterator& istring,
-                     string::iterator& estring) {
+static void remove_trailing_tags(const string& no_slashes,
+                                 string::iterator& istring,
+                                 string::iterator& estring) {
     // remove trailing tags (if any): s|.*\[.*?\]$||
     do {
         auto rbstring = no_slashes.rbegin();
