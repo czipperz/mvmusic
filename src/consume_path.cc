@@ -306,9 +306,9 @@ void Consumer::consume(const path& p) {
 }
 
 #include <fstream>
-void Consumer::read_playlist_file(string throwaway) {
-    _write_to_file_ = true;
-    _playlist_file_ = std::move(throwaway);
+Consumer::Consumer(string throwaway)
+    : _playlist_file_(std::move(throwaway))
+    , _write_to_file_(true) {
     std::ifstream file(_playlist_file_);
 
     if (file) {

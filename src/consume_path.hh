@@ -24,8 +24,6 @@ public:
     ~Consumer();
 
     void consume(const boost::filesystem::path& mp3_file);
-
-    void read_playlist_file(std::string playlist_file);
 };
 
 #endif
