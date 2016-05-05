@@ -43,11 +43,11 @@ This program does the following things:
 Options, files, and directories can be in any order.
 
 ### Options
+* `-h` `--help` - print out usage and exit.
 * `-n` `--nono` - print out what will be done and don't do it.
 * `-p <playlist>` `--playlist <playlist>` - set the playlist to insert
   songs into.  Warns the user if the file provided doesn't have a
   `.m3u` extension.
-* `-h` `--help` - print out usage and exit.
 
 ### Arguments
 With no arguments, `mvmusic` will scan the downloads directory for
