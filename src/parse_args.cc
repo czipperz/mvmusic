@@ -50,6 +50,9 @@ void parse_args(int argc, char** argv, vector<path>& files,
         } else if (strcmp(str, "-n") == 0 ||
                    strcmp(str, "--nono") == 0) {
             NONO = true;
+        } else if (strcmp(str, "-m") == 0 ||
+                   strcmp(str, "--mpc") == 0) {
+            USE_MPC = true;
         } else if (strcmp(str, "-p") == 0 ||
                    strcmp(str, "--playlist") == 0) {
             if (argi + 1 == argc) {

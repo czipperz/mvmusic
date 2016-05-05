@@ -15,8 +15,6 @@ This program does the following things:
 9. If the file name isn't a line in the playlist file, add it in the
    correct alphabetical position.
 10. Save the playlist file.
-11. If the command `mpc` works, run `mpc clear` and `mpc load
-    <playlist>` (reload the MPD playlist with the one provided).
 
 ## Installation
 ### Dependencies
@@ -44,6 +42,8 @@ Options, files, and directories can be in any order.
 
 ### Options
 * `-h` `--help` - print out usage and exit.
+* `-m` `--mpc` - after everything else, run `mpc clear` and
+  `mpc load <playlist>`, reloading the MPD playlist with the one provided.
 * `-n` `--nono` - print out what will be done and don't do it.
 * `-p <playlist>` `--playlist <playlist>` - set the playlist to insert
   songs into.  Warns the user if the file provided doesn't have a

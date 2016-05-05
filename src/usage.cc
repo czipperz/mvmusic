@@ -9,6 +9,9 @@ void usage(char* progname) {
     puts("");
     puts("Options:");
     puts("  `-h` `--help` - print out usage and exit.");
+    puts("  `-m` `--mpc`  - after everything else, run `mpc clear` and\n"
+         "                  `mpc load <playlist>`, reloading the MPD playlist\n"
+         "                  with the one provided.");
     puts("  `-n` `--nono` - print out what will be done and don't do it");
     puts("  `-p <playlist>` `--playlist <playlist>` - set the playlist to insert\n"
          "      songs into.  Warns the user if the file provided doesn't have a"

@@ -336,14 +336,14 @@ Consumer::~Consumer() {
             for (const auto& s : _playlist_lines_) {
                 file << s << '\n';
             }
-            if (system("mpc -q") == 0) {
+            if (USE_MPC && system("mpc -q") == 0) {
                 system("mpc -q clear");
                 path pf = _playlist_file_;
                 string pl =
                     pf.filename().replace_extension().string();
                 system(("mpc -q load " + pl).c_str());
             }
-        } else {
+        } else if (USE_MPC) {
             printf("$ mpc clear\n");
             path pf = _playlist_file_;
             string pl = pf.filename().replace_extension().string();
