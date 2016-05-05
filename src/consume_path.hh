@@ -11,14 +11,14 @@ class Consumer {
     std::string _playlist_file_;
     std::set<std::string> _playlist_lines_;
     std::vector<std::future<void> > _futures_;
-    std::mutex _print_mutex_;
+    std::mutex _print_mutex_, _playlist_mutex_;
     bool _write_to_file_ = false;
 
     void _raw_consume_(const boost::filesystem::path& mp3_file);
     void _apply_tags_(const boost::filesystem::path& mp3_file,
                       const std::string& artist,
                       const std::string& title);
-    void _sorted_insert_song_(std::string str);
+    void _sorted_insert_song_(const std::string& str);
 
 public:
     ~Consumer();

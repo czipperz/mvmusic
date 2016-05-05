@@ -319,10 +319,13 @@ Consumer::Consumer(string throwaway)
     }
 }
 
-void Consumer::_sorted_insert_song_(std::string str) {
-    auto sb = _playlist_lines_.size();
-    _playlist_lines_.insert(str);
-    if (NONO && sb != _playlist_lines_.size()) {
+void Consumer::_sorted_insert_song_(const std::string& str) {
+    bool inserted;
+    {
+        lock_guard<mutex> playlist_lock(_playlist_mutex_);
+        inserted = _playlist_lines_.insert(str).second;
+    }
+    if (NONO && inserted) {
         lock_guard<mutex> print_lock(_print_mutex_);
         printf("Insert `%s` into playlist `%s`.\n", str.c_str(),
                _playlist_file_.c_str());
