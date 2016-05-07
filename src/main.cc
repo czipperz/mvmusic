@@ -16,7 +16,7 @@ int main(int argc, char** argv) {
     parse_args(argc, argv, files, playlist);
 
     Consumer consumer(std::move(playlist));
-    for (auto& file : files) {
-        consumer.consume(std::move(file));
+    for (const auto& file : files) {
+        consumer.consume(file);
     }
 }
