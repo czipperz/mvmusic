@@ -86,8 +86,9 @@ void parse_args(int argc, char** argv, vector<path>& files,
             }
         } else if (str[0] == '-') {
             fprintf(stderr, "Unrecognized option `%s`.\n", str);
-            fprintf(stderr, "Use `--` as a unique argument before this argument to make it parse as\n"
-                    "  a file/directory.\n\n");
+            fprintf(stderr, "Use `--` as a unique argument before "
+                            "this argument to make it parse as\n"
+                            "  a file/directory.\n\n");
             usage(argv[-1]);
             exit(EXIT_FAILURE);
         } else {

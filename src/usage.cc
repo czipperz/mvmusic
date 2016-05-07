@@ -14,7 +14,7 @@ void usage(char* progname) {
          "                  with the one provided.");
     puts("  `-n` `--nono` - print out what will be done and don't do it");
     puts("  `-p <playlist>` `--playlist <playlist>` - set the playlist to insert\n"
-         "      songs into.  Warns the user if the file provided doesn't have a"
+         "      songs into.  Warns the user if the file provided doesn't have a\n"
          "      `.m3u` extension.");
     puts("");
     puts("Arguments:");
