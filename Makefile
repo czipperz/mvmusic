@@ -38,6 +38,9 @@ install: all
 ${srcout}/main.o: ${src}/main.cc
 	${CXX} ${CXXFLAGS} -o $@ -c $<
 
+${srcout}/%.o: ${src}/%.cc
+	${CXX} ${CXXFLAGS} -o $@ -c $<
+
 ${srcout}/%.o: ${src}/%.cc ${src}/%.hh
 	${CXX} ${CXXFLAGS} -o $@ -c $<
 
