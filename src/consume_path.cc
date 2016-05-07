@@ -109,9 +109,9 @@ fix_feat(string::iterator istring, string::iterator estring) {
     return fnone;
 }
 
+/// Remove `\[.*?\] ` and an optional `- ` from the beginning.
 void remove_genre(string::iterator& istring,
                   const string::iterator& estring) {
-    // remove genre: s|^\[.*\]( -)? ||
     if (*istring == '[') {
         do {
             istring = find(istring, estring, ']');
@@ -130,10 +130,10 @@ void remove_genre(string::iterator& istring,
     }
 }
 
+/// Remove `\s*\[.*?\]` from end if it exists.
 static void remove_trailing_tags(const string& no_slashes,
                                  string::iterator& istring,
                                  string::iterator& estring) {
-    // remove trailing tags (if any): s|.*\[.*?\]$||
     do {
         auto rbstring = no_slashes.rbegin();
         auto ristring = rbstring;
@@ -194,6 +194,7 @@ static void remove_trailing_tags(const string& no_slashes,
     } while (0);
 }
 
+/// Split `fname` into `artist\s+-\s*name`
 static void
 parse_file_name(const string& fname, string& artist, string& name) {
     const auto bfname = fname.begin();
