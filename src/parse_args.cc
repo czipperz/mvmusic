@@ -66,7 +66,8 @@ void parse_args(int argc, char** argv, vector<path>& files,
                         playlist.c_str(), str);
                 exit(EXIT_FAILURE);
             } else {
-                playlist = argv[argi + 1];
+                ++argi;
+                playlist = argv[argi];
                 set_playlist = true;
 
                 // if not .m3u file
