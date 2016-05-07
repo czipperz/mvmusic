@@ -16,7 +16,6 @@ class Consumer {
     bool _write_to_file_ = false;
 
     void _thread_consume_();
-    void _raw_consume_(const boost::filesystem::path& mp3_file);
     void _apply_tags_(const boost::filesystem::path& mp3_file,
                       const std::string& artist,
                       const std::string& title);
@@ -50,7 +49,7 @@ public:
      * Renames the file and moves it into the music directory.  This
      * will also assign tags based on the new filename.
      */
-    void consume(boost::filesystem::path mp3_file);
+    void consume(const boost::filesystem::path& mp3_file);
 };
 
 #endif

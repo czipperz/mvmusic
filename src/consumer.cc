@@ -4,10 +4,6 @@
 using namespace boost::filesystem;
 using namespace std;
 
-void Consumer::consume(path p) {
-    return _raw_consume_(p);
-}
-
 #include <fstream>
 Consumer::Consumer(string throwaway)
     : _playlist_file_(std::move(throwaway))

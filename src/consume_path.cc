@@ -229,7 +229,7 @@ restart:
     }
 }
 
-void Consumer::_raw_consume_(const path& p) {
+void Consumer::consume(const path& p) {
     // dropped .mp3 here
     auto no_slashes = p.filename().replace_extension().string();
 
