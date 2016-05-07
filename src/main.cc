@@ -2,7 +2,7 @@
 
 #include "env.hh"
 #include "parse_args.hh"
-#include "consume_path.hh"
+#include "consumer.hh"
 
 using namespace std;
 using namespace boost::filesystem;

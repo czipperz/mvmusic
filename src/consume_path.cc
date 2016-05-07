@@ -3,7 +3,7 @@
 #include <ctype.h>
 
 #include "globals.hh"
-#include "consume_path.hh"
+#include "consumer.hh"
 #include "env.hh"
 
 using namespace std;
@@ -229,44 +229,6 @@ restart:
     }
 }
 
-#include <taglib/fileref.h>
-void Consumer::_apply_tags_(const path& path, const string& artist,
-                            const string& title) {
-    using namespace TagLib;
-    FileRef file(path.c_str());
-    Tag* tags = file.tag();
-
-    if (!tags) {
-        lock_guard<mutex> print_lock(_print_mutex_);
-        fprintf(stderr, "Music file `%s` has no tags!\n", path.c_str());
-        return;
-    }
-
-    if (tags->artist() != artist) {
-        if (NONO) {
-            lock_guard<mutex> print_lock(_print_mutex_);
-            printf("  Artist: `%s` -> `%s`\n",
-                   tags->artist().toCString(), artist.c_str());
-        } else {
-            tags->setArtist(artist);
-        }
-    }
-
-    if (tags->title() != title) {
-        if (NONO) {
-            lock_guard<mutex> print_lock(_print_mutex_);
-            printf("  Title: `%s` -> `%s`\n",
-                   tags->title().toCString(), title.c_str());
-        } else {
-            tags->setTitle(title);
-        }
-    }
-
-    if (!NONO) {
-        file.save();
-    }
-}
-
 void Consumer::_raw_consume_(const path& p) {
     // dropped .mp3 here
     auto no_slashes = p.filename().replace_extension().string();
@@ -285,7 +247,6 @@ void Consumer::_raw_consume_(const path& p) {
     _sorted_insert_song_(new_path.filename().string());
     if (p != new_path) {
         if (NONO) {
-            lock_guard<mutex> print_lock(_print_mutex_);
             printf("mv \"%s\" \"%s\"\n", p.c_str(), new_path.c_str());
         } else {
             rename(p, new_path);
@@ -299,59 +260,5 @@ void Consumer::_raw_consume_(const path& p) {
         _apply_tags_(p, artist, name);
     } else {
         _apply_tags_(new_path, artist, name);
-    }
-}
-
-void Consumer::consume(const path& p) {
-    return _raw_consume_(p);
-}
-
-#include <fstream>
-Consumer::Consumer(string throwaway)
-    : _playlist_file_(std::move(throwaway))
-    , _write_to_file_(true) {
-    std::ifstream file(_playlist_file_);
-
-    if (file) {
-        string temp;
-        while (getline(file, temp)) {
-            _playlist_lines_.insert(temp);
-        }
-    }
-}
-
-void Consumer::_sorted_insert_song_(const std::string& str) {
-    bool inserted;
-    {
-        lock_guard<mutex> playlist_lock(_playlist_mutex_);
-        inserted = _playlist_lines_.insert(str).second;
-    }
-    if (NONO && inserted) {
-        lock_guard<mutex> print_lock(_print_mutex_);
-        printf("Insert `%s` into playlist `%s`.\n", str.c_str(),
-               _playlist_file_.c_str());
-    }
-}
-
-Consumer::~Consumer() {
-    if (_write_to_file_) {
-        if (!NONO) {
-            std::ofstream file(_playlist_file_);
-            for (const auto& s : _playlist_lines_) {
-                file << s << '\n';
-            }
-            if (USE_MPC && system("mpc -q") == 0) {
-                system("mpc -q clear");
-                path pf = _playlist_file_;
-                string pl =
-                    pf.filename().replace_extension().string();
-                system(("mpc -q load " + pl).c_str());
-            }
-        } else if (USE_MPC) {
-            printf("$ mpc clear\n");
-            path pf = _playlist_file_;
-            string pl = pf.filename().replace_extension().string();
-            printf("$ mpc load %s\n", pl.c_str());
-        }
     }
 }
