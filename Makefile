@@ -9,7 +9,6 @@ CXX = g++
 CXXFLAGS = -std=c++11 -Wall -Wpedantic -Wextra
 LDFLAGS = -lboost_filesystem -lboost_system -ltag
 
-# -not -name 'perform_tests.cc'
 srcobjects = $(shell find ${src} -name '*.cc' -not -name 'main.cc' | perl -pe 's|${src}/(.*)\.cc|${srcout}/$$1.o|')
 testobjects = $(shell find ${test} -name '*.cc' | perl -pe 's|${test}/(.*)\.cc|${testout}/$$1.o|')
 benchobjects = $(shell find ${bench} -name '*.cc' | perl -pe 's|${bench}/(.*)\.cc|${benchout}/$$1.o|')
