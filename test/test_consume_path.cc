@@ -2,7 +2,7 @@
  * http://creativecommons.org/publicdomain/zero/1.0/ */
 
 #include "catch.hpp"
-#include "../src/consume_path.hh"
+#include "../src/consumer.hh"
 
 using namespace std;
 TEST_CASE("find_feat") {
