@@ -48,6 +48,7 @@ Consumer::~Consumer() {
             }
         } else if (USE_MPC) {
             printf("$ mpc clear\n");
+            printf("$ mpc update\n");
             string pl = path(_playlist_file_).filename().replace_extension().string();
             printf("$ mpc load %s\n", pl.c_str());
         }
