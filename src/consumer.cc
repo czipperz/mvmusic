@@ -41,16 +41,14 @@ Consumer::~Consumer() {
             if (USE_MPC && system("mpc -q") == 0) {
                 system("mpc -q clear");
                 system("mpc -q update");
-                path pf = _playlist_file_;
                 string pl =
                     "mpc -q load " +
-                    pf.filename().replace_extension().string();
+                    path(_playlist_file_).filename().replace_extension().string();
                 system(pl.c_str());
             }
         } else if (USE_MPC) {
             printf("$ mpc clear\n");
-            path pf = _playlist_file_;
-            string pl = pf.filename().replace_extension().string();
+            string pl = path(_playlist_file_).filename().replace_extension().string();
             printf("$ mpc load %s\n", pl.c_str());
         }
     }
