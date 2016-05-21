@@ -7,7 +7,7 @@ benchout = benchout
 
 CXX = g++
 CXXFLAGS = -std=c++11 -Wall -Wpedantic -Wextra
-LDFLAGS = -lpthread -lboost_filesystem -lboost_system -ltag
+LDFLAGS = -lboost_filesystem -lboost_system -ltag
 
 # -not -name 'perform_tests.cc'
 srcobjects = $(shell find ${src} -name '*.cc' -not -name 'main.cc' | perl -pe 's|${src}/(.*)\.cc|${srcout}/$$1.o|')
