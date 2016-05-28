@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <ctype.h>
 
+#include "conf.hh"
 #include "globals.hh"
 #include "consumer.hh"
 #include "env.hh"
@@ -245,8 +246,7 @@ void Consumer::consume(const path& p) {
     remove_trailing_tags(no_slashes, istring, estring);
     auto new_fname = fix_feat(istring, estring);
 
-    auto new_path =
-        get_home_dir() / "music" / "s" / (new_fname + ".mp3");
+    auto new_path = get_songs_dir() / (new_fname + ".mp3");
 
     _sorted_insert_song_(new_path.filename().string());
     if (p != new_path) {

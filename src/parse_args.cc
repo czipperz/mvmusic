@@ -6,6 +6,7 @@
 #include <string.h>
 #include <stdio.h>
 
+#include "conf.hh"
 #include "env.hh"
 #include "parse_args.hh"
 #include "globals.hh"
@@ -103,8 +104,7 @@ void parse_args(int argc, char** argv, vector<path>& files,
     }
 
     if (!set_playlist) {
-        playlist = (get_home_dir() / "music" / "p" / "Electronic.m3u")
-                       .string();
+        playlist = get_default_playlist().string();
     }
     if (argc == 0 || !read_manual) {
         read_directory(files, get_home_dir() / "wnlds");
