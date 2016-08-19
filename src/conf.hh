@@ -7,6 +7,7 @@
 
 #include <boost/filesystem.hpp>
 
+boost::filesystem::path get_downloads_dir();
 boost::filesystem::path get_default_playlist();
 boost::filesystem::path get_songs_dir();
 

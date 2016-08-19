@@ -107,6 +107,6 @@ void parse_args(int argc, char** argv, vector<path>& files,
         playlist = get_default_playlist().string();
     }
     if (argc == 0 || !read_manual) {
-        read_directory(files, get_home_dir() / "wnlds");
+        read_directory(files, get_downloads_dir());
     }
 }

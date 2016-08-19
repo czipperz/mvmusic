@@ -5,9 +5,12 @@
 #include <boost/filesystem.hpp>
 #include "env.hh"
 
+boost::filesystem::path get_downloads_dir() {
+    return get_home_dir() / "wnlds";
+}
 boost::filesystem::path get_default_playlist() {
-return get_home_dir() / "music" / "p" / "Electronic.m3u";
+    return get_home_dir() / "music" / "p" / "Electronic.m3u";
 }
 boost::filesystem::path get_songs_dir() {
-return get_home_dir() / "music" / "s";
+    return get_home_dir() / "music" / "s";
 }
