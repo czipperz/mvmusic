@@ -59,6 +59,8 @@ Consumer::~Consumer() {
 void Consumer::_apply_tags_(const path& path, const string& artist,
                             const string& title) {
     using namespace TagLib;
+    bool changed = false;
+
     FileRef file(path.c_str());
     Tag* tags = file.tag();
 
@@ -72,6 +74,7 @@ void Consumer::_apply_tags_(const path& path, const string& artist,
             printf("  Artist: `%s` -> `%s`\n",
                    tags->artist().toCString(), artist.c_str());
         } else {
+            changed = true;
             tags->setArtist(artist);
         }
     }
@@ -81,11 +84,12 @@ void Consumer::_apply_tags_(const path& path, const string& artist,
             printf("  Title: `%s` -> `%s`\n",
                    tags->title().toCString(), title.c_str());
         } else {
+            changed = true;
             tags->setTitle(title);
         }
     }
 
-    if (!NONO) {
+    if (changed) {
         file.save();
     }
 }
