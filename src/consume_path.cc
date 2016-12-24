@@ -14,8 +14,7 @@
 using namespace std;
 using namespace boost::filesystem;
 
-int
-find_feat(string::iterator bstring, string::iterator estring) {
+int find_feat(string::iterator bstring, string::iterator estring) {
     // bounds check for ft./Ft.
     if (bstring + 2 >= estring) {
         return 0;
