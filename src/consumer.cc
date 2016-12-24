@@ -35,6 +35,9 @@ Consumer::~Consumer() {
     if (_write_to_file_) {
         if (!NONO) {
             std::ofstream file(_playlist_file_);
+            if (!file)
+                throw std::runtime_error("Problem opening file " +
+                                            _playlist_file_);
             for (const auto& s : _playlist_lines_) {
                 file << s << '\n';
             }
