@@ -7,7 +7,7 @@ benchout = benchout
 
 CXX = g++
 CXXFLAGS = -std=c++11 -Wall -Wpedantic -Wextra
-LDFLAGS = -lboost_filesystem -lboost_system -ltag
+LDFLAGS = -lboost_filesystem -lboost_system -ltag -lmpdclient
 
 ifeq (${DEBUG_MODE},true)
 CXXFLAGS += -g

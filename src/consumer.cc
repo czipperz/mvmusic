@@ -2,6 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <mpd/client.h>
 #include "consumer.hh"
 #include "globals.hh"
 
@@ -41,19 +42,16 @@ Consumer::~Consumer() {
             for (const auto& s : _playlist_lines_) {
                 file << s << '\n';
             }
-            if (USE_MPC && system("mpc -q") == 0) {
-                system("mpc -q clear");
-                system("mpc -q update");
-                string pl =
-                    "mpc -q load " +
-                    path(_playlist_file_).filename().replace_extension().string();
-                system(pl.c_str());
+            if (USE_MPC) {
+                _run_mpd_();
             }
         } else if (USE_MPC) {
-            printf("$ mpc clear\n");
-            printf("$ mpc update\n");
-            string pl = path(_playlist_file_).filename().replace_extension().string();
-            printf("$ mpc load %s\n", pl.c_str());
+            printf("Will clear the mpd playlist, update the mpd "
+                   "database, and load %s.\n",
+                   path(_playlist_file_)
+                       .filename()
+                       .replace_extension()
+                       .c_str());
         }
     }
 }

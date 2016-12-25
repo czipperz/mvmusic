@@ -25,6 +25,7 @@ class Consumer {
                       const std::string& title);
     void _sorted_insert_song_(const std::string& str);
     void _create_threads_();
+    void _run_mpd_();
 
 public:
     /**
