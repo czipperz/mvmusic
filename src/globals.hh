@@ -7,7 +7,7 @@
 
 /**
  * @file globals.hh
- * @brief Defines @c NONO and @c USE_MPC.
+ * @brief Defines @c NONO and @c USE_MPD.
  */
 
 /**
@@ -19,6 +19,6 @@ extern bool NONO;
 /**
  * @brief Controls whether the playlist should be reloaded in MPD.
  */
-extern bool USE_MPC;
+extern bool USE_MPD;
 
 #endif

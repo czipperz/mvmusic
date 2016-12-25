@@ -42,10 +42,10 @@ Consumer::~Consumer() {
             for (const auto& s : _playlist_lines_) {
                 file << s << '\n';
             }
-            if (USE_MPC) {
+            if (USE_MPD) {
                 _run_mpd_();
             }
-        } else if (USE_MPC) {
+        } else if (USE_MPD) {
             printf("Will clear the mpd playlist, update the mpd "
                    "database, and load %s.\n",
                    path(_playlist_file_)

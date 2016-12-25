@@ -22,7 +22,7 @@
  *
  * @see globals.hh
  * @see NONO
- * @see USE_MPC
+ * @see USE_MPD
  * @see usage.hh
  * @see usage()
  */
