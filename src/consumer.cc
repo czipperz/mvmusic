@@ -16,8 +16,13 @@ struct ifstream {
         file = std::fopen(path, "r");
     }
     ~ifstream() noexcept { std::fclose(file); }
-    ifstream(const ifstream&) = delete;
-    ifstream& operator=(const ifstream&) = delete;
+    ifstream(ifstream&& other) noexcept : file(nullptr) {
+        *this = std::move(other);
+    }
+    ifstream& operator=(ifstream&& other) noexcept {
+        std::swap(file, other.file);
+        return *this;
+    }
 
     bool read_line(std::string& other) {
         other.clear();
@@ -65,9 +70,7 @@ Consumer::Consumer(std::string&& throwaway)
     : _playlist_file_(std::move(throwaway))
     , _write_to_file_(true) {
 
-    ifstream file(_playlist_file_.c_str());
-
-    if (file) {
+    if (auto file = ifstream(_playlist_file_.c_str())) {
         std::string temp;
         while (file.read_line(temp)) {
             _playlist_lines_.insert(temp);
