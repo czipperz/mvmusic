@@ -11,10 +11,8 @@
 #include "consumer.hh"
 #include "env.hh"
 
-using namespace std;
-using namespace boost::filesystem;
-
-static int find_feat(string::iterator bstring, string::iterator estring) {
+static int find_feat(std::string::iterator bstring,
+                     std::string::iterator estring) {
     // bounds check for ft./Ft.
     if (bstring + 2 >= estring) {
         return 0;
@@ -36,9 +34,10 @@ static int find_feat(string::iterator bstring, string::iterator estring) {
     return 0;
 }
 
-static string fix_feat_delim(const string::iterator bstring,
-                      const string::iterator estring,
-                      const char odelim, const char cdelim) {
+static std::string
+fix_feat_delim(const std::string::iterator bstring,
+               const std::string::iterator estring, const char odelim,
+               const char cdelim) {
     auto istring = find(bstring, estring, odelim);
     if (istring == estring || /* !!! */ ++istring == estring) {
         return {bstring, estring};
@@ -50,7 +49,7 @@ static string fix_feat_delim(const string::iterator bstring,
         if (ebracket == estring) {
             return {};
         }
-        string output{bstring, istring - 1};
+        std::string output{bstring, istring - 1};
         output += '(';
         output.append("feat.");
         output.append(istring + feat_offset, ebracket);
@@ -63,8 +62,9 @@ static string fix_feat_delim(const string::iterator bstring,
     return {bstring, estring};
 }
 
-static string
-fix_feat_nodelim(string::iterator bstring, string::iterator estring) {
+static std::string
+fix_feat_nodelim(std::string::iterator bstring,
+                 std::string::iterator estring) {
     auto istring = bstring;
     while (istring != estring) {
         istring = find_if(istring, estring, [](char ch) {
@@ -78,7 +78,7 @@ fix_feat_nodelim(string::iterator bstring, string::iterator estring) {
             break;
         }
         if (auto feat_offset = find_feat(istring, estring)) {
-            string output{bstring, istring};
+            std::string output{bstring, istring};
             output += "(feat.";
 
             // if has (for example) a `(SXX Remix)`
@@ -104,8 +104,8 @@ fix_feat_nodelim(string::iterator bstring, string::iterator estring) {
 /// `ft.`, `Ft.`, `Feat.` --> feat.
 /// Delimiter:
 /// None, `[` then `]` --> `(` then `)`
-static string
-fix_feat(string::iterator istring, string::iterator estring) {
+static std::string fix_feat(std::string::iterator istring,
+                            std::string::iterator estring) {
     auto fbrackets = fix_feat_delim(istring, estring, '[', ']');
     auto fparens =
         fix_feat_delim(fbrackets.begin(), fbrackets.end(), '(', ')');
@@ -114,14 +114,14 @@ fix_feat(string::iterator istring, string::iterator estring) {
 }
 
 /// Remove `\[.*?\] ` and an optional `- ` from the beginning.
-static void remove_genre(string::iterator& istring,
-                  const string::iterator& estring) {
+static void remove_genre(std::string::iterator& istring,
+                         const std::string::iterator& estring) {
     if (*istring == '[') {
         do {
             istring = find(istring, estring, ']');
             if (istring == estring) {
-                fprintf(stderr,
-                        "Unmatched `[`.  Skipping removing genre.\n");
+                std::fprintf(stderr, "Unmatched `[`.  Skipping "
+                                     "removing genre.\n");
                 break;
             }
             if (istring[1] == ' ') {
@@ -135,9 +135,9 @@ static void remove_genre(string::iterator& istring,
 }
 
 /// Remove `\s*\[.*?\]` from end if it exists.
-static void remove_trailing_tags(const string& no_slashes,
-                                 string::iterator& istring,
-                                 string::iterator& estring) {
+static void remove_trailing_tags(const std::string& no_slashes,
+                                 std::string::iterator& istring,
+                                 std::string::iterator& estring) {
     do {
         auto rbstring = no_slashes.rbegin();
         auto ristring = rbstring;
@@ -146,8 +146,9 @@ static void remove_trailing_tags(const string& no_slashes,
         if (ristring != restring && *ristring == ']') {
             ristring = find(ristring, restring, '[');
             if (ristring == restring) {
-                fprintf(stderr, "Unmatched `]`.  Skipping remove "
-                                "trailing tags.\n");
+                std::fprintf(stderr,
+                             "Unmatched `]`.  Skipping remove "
+                             "trailing tags.\n");
                 break;
             }
 
@@ -177,8 +178,9 @@ static void remove_trailing_tags(const string& no_slashes,
 
             ++ristring;
             if (ristring == restring) {
-                fprintf(stderr, "Trailing tags are entire filename.  "
-                                "Skipping remove trailing tags.\n");
+                std::fprintf(stderr,
+                             "Trailing tags are entire filename.  "
+                             "Skipping remove trailing tags.\n");
                 break;
             }
 
@@ -187,8 +189,9 @@ static void remove_trailing_tags(const string& no_slashes,
                 find_if(ristring, restring,
                         [](char ch) -> bool { return !isspace(ch); });
             if (ristring == restring) {
-                fprintf(stderr, "Trailing tags are entire filename.  "
-                                "Skipping remove trailing tags.\n");
+                std::fprintf(stderr,
+                             "Trailing tags are entire filename.  "
+                             "Skipping remove trailing tags.\n");
                 break;
             }
 
@@ -199,8 +202,8 @@ static void remove_trailing_tags(const string& no_slashes,
 }
 
 /// Split `fname` into `artist\s+-\s*name`
-static void
-parse_file_name(const string& fname, string& artist, string& name) {
+static void parse_file_name(const std::string& fname,
+                            std::string& artist, std::string& name) {
     const auto bfname = fname.begin();
     const auto efname = fname.end();
 
@@ -233,7 +236,7 @@ restart:
     }
 }
 
-void Consumer::consume(const path& p) {
+void Consumer::consume(const boost::filesystem::path& p) {
     // dropped .mp3 here
     auto no_slashes = p.filename().replace_extension().string();
 
@@ -250,13 +253,14 @@ void Consumer::consume(const path& p) {
     _sorted_insert_song_(new_path.filename().string());
     if (p != new_path) {
         if (NONO) {
-            printf("mv \"%s\" \"%s\"\n", p.c_str(), new_path.c_str());
+            std::printf("mv \"%s\" \"%s\"\n", p.c_str(),
+                        new_path.c_str());
         } else {
             rename(p, new_path);
         }
     }
 
-    string artist, name;
+    std::string artist, name;
     parse_file_name(new_fname, artist, name);
 
     if (NONO) {

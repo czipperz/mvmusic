@@ -8,17 +8,15 @@
 #include "consumer.hh"
 #include "globals.hh"
 
-using namespace boost::filesystem;
-using namespace std;
 
-Consumer::Consumer(string&& throwaway)
+Consumer::Consumer(std::string&& throwaway)
     : _playlist_file_(std::move(throwaway))
     , _write_to_file_(true) {
 
     std::ifstream file(_playlist_file_);
 
     if (file) {
-        string temp;
+        std::string temp;
         while (getline(file, temp)) {
             _playlist_lines_.insert(temp);
         }
@@ -28,8 +26,8 @@ Consumer::Consumer(string&& throwaway)
 void Consumer::_sorted_insert_song_(const std::string& str) {
     bool inserted = _playlist_lines_.insert(str).second;
     if (NONO && inserted) {
-        printf("Insert `%s` into playlist `%s`.\n", str.c_str(),
-               _playlist_file_.c_str());
+        std::printf("Insert `%s` into playlist `%s`.\n", str.c_str(),
+                    _playlist_file_.c_str());
     }
 }
 
@@ -44,39 +42,40 @@ Consumer::~Consumer() {
                     _run_mpd_();
                 }
             } else {
-                fprintf(stderr,
-                        "Problem opening file %s!\nAborting!\n",
-                        _playlist_file_.c_str());
-                exit(EXIT_FAILURE);
+                std::fprintf(stderr,
+                             "Problem opening file %s!\nAborting!\n",
+                             _playlist_file_.c_str());
+                std::exit(EXIT_FAILURE);
             }
         } else if (USE_MPD) {
-            printf("Will clear the mpd playlist, update the mpd "
-                   "database, and load %s.\n",
-                   path(_playlist_file_)
-                       .filename()
-                       .replace_extension()
-                       .c_str());
+            std::printf("Will clear the mpd playlist, update the mpd "
+                        "database, and load %s.\n",
+                        boost::filesystem::path(_playlist_file_)
+                            .filename()
+                            .replace_extension()
+                            .c_str());
         }
     }
 }
 
-void Consumer::_apply_tags_(const path& path, const string& artist,
-                            const string& title) {
-    using namespace TagLib;
+void Consumer::_apply_tags_(const boost::filesystem::path& path,
+                            const std::string& artist,
+                            const std::string& title) {
     bool changed = false;
 
-    FileRef file(path.c_str());
-    Tag* tags = file.tag();
+    TagLib::FileRef file(path.c_str());
+    TagLib::Tag* tags = file.tag();
 
     if (!tags) {
-        fprintf(stderr, "Music file `%s` has no tags!\n", path.c_str());
+        std::fprintf(stderr, "Music file `%s` has no tags!\n",
+                     path.c_str());
         return;
     }
 
     if (tags->artist() != artist) {
         if (NONO) {
-            printf("  Artist: `%s` -> `%s`\n",
-                   tags->artist().toCString(), artist.c_str());
+            std::printf("  Artist: `%s` -> `%s`\n",
+                        tags->artist().toCString(), artist.c_str());
         } else {
             changed = true;
             tags->setArtist(artist);
@@ -85,8 +84,8 @@ void Consumer::_apply_tags_(const path& path, const string& artist,
 
     if (tags->title() != title) {
         if (NONO) {
-            printf("  Title: `%s` -> `%s`\n",
-                   tags->title().toCString(), title.c_str());
+            std::printf("  Title: `%s` -> `%s`\n",
+                        tags->title().toCString(), title.c_str());
         } else {
             changed = true;
             tags->setTitle(title);

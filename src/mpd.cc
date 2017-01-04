@@ -44,7 +44,7 @@ void Consumer::_run_mpd_() {
     con.run_update();
     for (const auto& s : _playlist_lines_) {
         if (!con.run_add(s.c_str())) {
-            fprintf(stderr, "ERROR adding file: %s\n", s.c_str());
+            std::fprintf(stderr, "ERROR adding file: %s\n", s.c_str());
         }
     }
 }
