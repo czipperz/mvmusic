@@ -2,14 +2,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <fstream>
 #include <mpd/client.h>
+#include <taglib/fileref.h>
 #include "consumer.hh"
 #include "globals.hh"
 
 using namespace boost::filesystem;
 using namespace std;
 
-#include <fstream>
 Consumer::Consumer(string&& throwaway)
     : _playlist_file_(std::move(throwaway))
     , _write_to_file_(true) {
@@ -59,7 +60,6 @@ Consumer::~Consumer() {
     }
 }
 
-#include <taglib/fileref.h>
 void Consumer::_apply_tags_(const path& path, const string& artist,
                             const string& title) {
     using namespace TagLib;
