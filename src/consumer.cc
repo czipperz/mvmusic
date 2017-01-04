@@ -10,7 +10,7 @@ using namespace boost::filesystem;
 using namespace std;
 
 #include <fstream>
-Consumer::Consumer(string throwaway)
+Consumer::Consumer(string&& throwaway)
     : _playlist_file_(std::move(throwaway))
     , _write_to_file_(true) {
 
