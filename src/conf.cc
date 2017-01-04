@@ -4,6 +4,7 @@
 
 #include <boost/filesystem.hpp>
 #include "env.hh"
+#include "conf.hh"
 
 boost::filesystem::path get_downloads_dir() {
     return get_home_dir() / "wnlds";
