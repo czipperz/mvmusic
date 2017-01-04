@@ -20,9 +20,10 @@ class connection : public std::unique_ptr<mpd_connection,
                                   void (*)(mpd_connection*)>;
 
 public:
-    connection(const char* name, int port, int delay)
+    connection(const char* name, unsigned port, unsigned delay)
         : super(mpd_connection_new(name, port, delay),
                 mpd_connection_free) {}
+
     void run_clear() {
         wrap_error(mpd_run_clear, get());
     }
