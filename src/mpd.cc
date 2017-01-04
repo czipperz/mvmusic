@@ -4,8 +4,6 @@
 
 class connection : public std::unique_ptr<mpd_connection,
                                           void (*)(mpd_connection*)> {
-    mpd_connection* con;
-
     template <class Fun, class Con, class... Args>
     static auto wrap_error(Fun f, Con con, Args&&... args)
         -> decltype(f(con, std::forward<Args>(args)...)) {
