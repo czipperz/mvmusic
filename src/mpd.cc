@@ -2,6 +2,7 @@
 #include <memory>
 #include "consumer.hh"
 
+namespace {
 class connection : public std::unique_ptr<mpd_connection,
                                           void (*)(mpd_connection*)> {
     template <class Fun, class Con, class... Args>
@@ -30,6 +31,8 @@ public:
         wrap_error(mpd_run_update, get(), path);
     }
 };
+}
+
 void Consumer::_run_mpd_() {
     connection con("localhost", 6600, 1000);
     con.run_clear();
