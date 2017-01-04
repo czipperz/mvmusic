@@ -35,8 +35,7 @@ void Consumer::_sorted_insert_song_(const std::string& str) {
 Consumer::~Consumer() {
     if (_write_to_file_) {
         if (!NONO) {
-            std::ofstream file(_playlist_file_);
-            if (file) {
+            if (auto file = std::ofstream(_playlist_file_)) {
                 for (const auto& s : _playlist_lines_) {
                     file << s << '\n';
                 }
