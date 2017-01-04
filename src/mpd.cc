@@ -31,6 +31,10 @@ public:
     void run_update(const char* path = nullptr) {
         wrap_error(mpd_run_update, get(), path);
     }
+
+    bool run_add(const char* fname) {
+        return mpd_run_add(get(), fname);
+    }
 };
 }
 
@@ -39,7 +43,7 @@ void Consumer::_run_mpd_() {
     con.run_clear();
     con.run_update();
     for (const auto& s : _playlist_lines_) {
-        if (!mpd_run_add(con.get(), s.c_str())) {
+        if (!con.run_add(s.c_str())) {
             fprintf(stderr, "ERROR adding file: %s\n", s.c_str());
         }
     }
