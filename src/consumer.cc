@@ -2,22 +2,74 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include <fstream>
 #include <mpd/client.h>
 #include <taglib/fileref.h>
+#include <stdexcept>
+
 #include "consumer.hh"
 #include "globals.hh"
 
+struct ifstream {
+    std::FILE* file;
+
+    explicit ifstream(const char* path) {
+        file = std::fopen(path, "r");
+    }
+    ~ifstream() noexcept { std::fclose(file); }
+    ifstream(const ifstream&) = delete;
+    ifstream& operator=(const ifstream&) = delete;
+
+    bool read_line(std::string& other) {
+        other.clear();
+        for (int c = std::fgetc(file); c != EOF;
+             c = std::fgetc(file)) {
+            if (c == int('\n')) {
+                return true;
+            } else {
+                other += char(c);
+            }
+        }
+        return false;
+    }
+
+    operator bool() noexcept { return file; }
+};
+
+struct ofstream {
+    std::FILE* file;
+
+    explicit ofstream(const char* path) {
+        file = std::fopen(path, "w");
+    }
+    ~ofstream() noexcept { std::fclose(file); }
+    ofstream(ofstream&& other) noexcept : file(nullptr) {
+        *this = std::move(other);
+    }
+    ofstream& operator=(ofstream&& other) noexcept {
+        std::swap(file, other.file);
+        return *this;
+    }
+
+    bool write(const char* str) noexcept {
+        return std::fputs(str, file) != EOF;
+    }
+
+    bool write(char c) noexcept {
+        return std::fputc(c, file) != EOF;
+    }
+
+    operator bool() noexcept { return file; }
+};
 
 Consumer::Consumer(std::string&& throwaway)
     : _playlist_file_(std::move(throwaway))
     , _write_to_file_(true) {
 
-    std::ifstream file(_playlist_file_);
+    ifstream file(_playlist_file_.c_str());
 
     if (file) {
         std::string temp;
-        while (getline(file, temp)) {
+        while (file.read_line(temp)) {
             _playlist_lines_.insert(temp);
         }
     }
@@ -34,9 +86,14 @@ void Consumer::_sorted_insert_song_(const std::string& str) {
 Consumer::~Consumer() {
     if (_write_to_file_) {
         if (!NONO) {
-            if (auto file = std::ofstream(_playlist_file_)) {
+            if (auto file = ofstream(_playlist_file_.c_str())) {
                 for (const auto& s : _playlist_lines_) {
-                    file << s << '\n';
+                    if (!(file.write(s.c_str()) &&
+                          file.write('\n'))) {
+                        throw std::runtime_error(
+                            "In ofstream::write: Error writing to "
+                            "playlist file.");
+                    }
                 }
                 if (USE_MPD) {
                     _run_mpd_();
