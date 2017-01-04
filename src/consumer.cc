@@ -76,8 +76,7 @@ Consumer::Consumer(std::string&& throwaway)
 }
 
 void Consumer::_sorted_insert_song_(const std::string& str) {
-    bool inserted = _playlist_lines_.insert(str).second;
-    if (NONO && inserted) {
+    if (_playlist_lines_.insert(str).second && NONO) {
         std::printf("Insert `%s` into playlist `%s`.\n", str.c_str(),
                     _playlist_file_.c_str());
     }
