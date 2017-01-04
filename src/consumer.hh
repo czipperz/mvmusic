@@ -40,7 +40,7 @@ public:
      * @post _playlist_file_ == playlist_file
      * @post _write_to_file_ == true
      */
-    Consumer(std::string&& playlist_file);
+    explicit Consumer(std::string&& playlist_file);
 
     /**
      * @brief If @c _write_to_file_, then dump @c _playlist_lines_
