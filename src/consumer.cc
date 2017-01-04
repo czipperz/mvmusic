@@ -43,8 +43,10 @@ Consumer::~Consumer() {
                     _run_mpd_();
                 }
             } else {
-                throw std::runtime_error("Problem opening file " +
-                                            _playlist_file_);
+                fprintf(stderr,
+                        "Problem opening file %s!\nAborting!\n",
+                        _playlist_file_.c_str());
+                exit(EXIT_FAILURE);
             }
         } else if (USE_MPD) {
             printf("Will clear the mpd playlist, update the mpd "
