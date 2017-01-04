@@ -36,14 +36,16 @@ Consumer::~Consumer() {
     if (_write_to_file_) {
         if (!NONO) {
             std::ofstream file(_playlist_file_);
-            if (!file)
+            if (file) {
+                for (const auto& s : _playlist_lines_) {
+                    file << s << '\n';
+                }
+                if (USE_MPD) {
+                    _run_mpd_();
+                }
+            } else {
                 throw std::runtime_error("Problem opening file " +
                                             _playlist_file_);
-            for (const auto& s : _playlist_lines_) {
-                file << s << '\n';
-            }
-            if (USE_MPD) {
-                _run_mpd_();
             }
         } else if (USE_MPD) {
             printf("Will clear the mpd playlist, update the mpd "
