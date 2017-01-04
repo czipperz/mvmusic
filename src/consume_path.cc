@@ -14,7 +14,7 @@
 using namespace std;
 using namespace boost::filesystem;
 
-int find_feat(string::iterator bstring, string::iterator estring) {
+static int find_feat(string::iterator bstring, string::iterator estring) {
     // bounds check for ft./Ft.
     if (bstring + 2 >= estring) {
         return 0;
@@ -36,7 +36,7 @@ int find_feat(string::iterator bstring, string::iterator estring) {
     return 0;
 }
 
-string fix_feat_delim(const string::iterator bstring,
+static string fix_feat_delim(const string::iterator bstring,
                       const string::iterator estring,
                       const char odelim, const char cdelim) {
     auto istring = find(bstring, estring, odelim);
@@ -63,7 +63,7 @@ string fix_feat_delim(const string::iterator bstring,
     return {bstring, estring};
 }
 
-string
+static string
 fix_feat_nodelim(string::iterator bstring, string::iterator estring) {
     auto istring = bstring;
     while (istring != estring) {
@@ -114,7 +114,7 @@ fix_feat(string::iterator istring, string::iterator estring) {
 }
 
 /// Remove `\[.*?\] ` and an optional `- ` from the beginning.
-void remove_genre(string::iterator& istring,
+static void remove_genre(string::iterator& istring,
                   const string::iterator& estring) {
     if (*istring == '[') {
         do {
