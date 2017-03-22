@@ -34,6 +34,18 @@ static int find_feat(std::string::iterator bstring,
     return 0;
 }
 
+static void add_parenthesized_postfix(std::string& output,
+                                      std::string::iterator begin,
+                                      std::string::iterator end) {
+    auto iter = begin;
+    while (iter != end && isspace(*iter)) {
+        ++iter;
+    }
+    if (iter != end && *iter == '(') {
+        output.append(begin, end);
+    }
+}
+
 static std::string
 fix_feat_delim(const std::string::iterator bstring,
                const std::string::iterator estring, const char odelim,
@@ -54,9 +66,9 @@ fix_feat_delim(const std::string::iterator bstring,
         output.append("feat.");
         output.append(istring + feat_offset, ebracket);
         output += ')';
-        if (ebracket + 1 != estring) {
-            output.append(ebracket + 1, estring);
-        }
+
+        add_parenthesized_postfix(output, ebracket + 1, estring);
+
         return output;
     }
     return {bstring, estring};
@@ -89,9 +101,9 @@ fix_feat_nodelim(std::string::iterator bstring,
 
             output.append(istring + feat_offset, efeat);
             output += ')';
-            if (efeat != estring) {
-                output.append(efeat, estring);
-            }
+
+            add_parenthesized_postfix(output, efeat, estring);
+
             return output;
         }
         ++istring;
