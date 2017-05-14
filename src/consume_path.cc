@@ -11,7 +11,7 @@
 #include "consumer.hh"
 #include "env.hh"
 
-static int find_feat(std::string::iterator bstring,
+int find_feat(std::string::iterator bstring,
                      std::string::iterator estring) {
     // bounds check for ft./Ft.
     if (bstring + 2 >= estring) {
@@ -46,7 +46,7 @@ static void add_parenthesized_postfix(std::string& output,
     }
 }
 
-static std::string
+std::string
 fix_feat_delim(const std::string::iterator bstring,
                const std::string::iterator estring, const char odelim,
                const char cdelim) {
@@ -74,7 +74,7 @@ fix_feat_delim(const std::string::iterator bstring,
     return {bstring, estring};
 }
 
-static std::string
+std::string
 fix_feat_nodelim(std::string::iterator bstring,
                  std::string::iterator estring) {
     auto istring = bstring;
@@ -126,7 +126,7 @@ static std::string fix_feat(std::string::iterator istring,
 }
 
 /// Remove `\[.*?\] ` and an optional `- ` from the beginning.
-static void remove_genre(std::string::iterator& istring,
+void remove_genre(std::string::iterator& istring,
                          const std::string::iterator& estring) {
     if (*istring == '[') {
         do {
