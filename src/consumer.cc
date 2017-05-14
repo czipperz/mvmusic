@@ -12,10 +12,13 @@
 struct ifstream {
     std::FILE* file;
 
-    explicit ifstream(const char* path) {
-        file = std::fopen(path, "r");
+    explicit ifstream(const char* path) :
+        file(std::fopen(path, "r")) {}
+    ~ifstream() noexcept {
+        if (file) {
+            std::fclose(file);
+        }
     }
-    ~ifstream() noexcept { std::fclose(file); }
     ifstream(ifstream&& other) noexcept : file(nullptr) {
         *this = std::move(other);
     }
@@ -43,10 +46,13 @@ struct ifstream {
 struct ofstream {
     std::FILE* file;
 
-    explicit ofstream(const char* path) {
-        file = std::fopen(path, "w");
+    explicit ofstream(const char* path)
+        : file(std::fopen(path, "w")) {}
+    ~ofstream() noexcept {
+        if (file) {
+            std::fclose(file);
+        }
     }
-    ~ofstream() noexcept { std::fclose(file); }
     ofstream(ofstream&& other) noexcept : file(nullptr) {
         *this = std::move(other);
     }
