@@ -26,6 +26,8 @@ set(LIBS ${Boost_FILESYSTEM_LIBRARY} ${Boost_SYSTEM_LIBRARY}
 target_link_libraries(mvmusic PRIVATE ${LIBS})
 target_link_libraries(mvmusic_tests PRIVATE ${LIBS})
 
+install(TARGETS mvmusic RUNTIME DESTINATION bin)
+
 add_definitions("-std=c++11" "-Wpedantic" "-Wall" "-Wextra"
   "-Wno-variadic-macros" "-Wno-long-long" "-pthread"
   "-Werror=implicit-function-declaration"
