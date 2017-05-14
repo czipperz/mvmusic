@@ -1,5 +1,9 @@
 # binaries
-out
-testout
-benchout
 mvmusic
+mvmusic_tests
+
+# CMake
+Makefile
+CMakeCache.txt
+CMakeFiles
+cmake_install.cmake
