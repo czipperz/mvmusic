@@ -17,14 +17,17 @@ set(files
 add_executable(mvmusic ${files}
   ${MVMUSIC_SOURCE_DIR}/src/main.cc)
 
-add_executable(mvmusic_tests ${files}
-  ${MVMUSIC_SOURCE_DIR}/test/test_consume_path.cc
-  ${MVMUSIC_SOURCE_DIR}/test/test_main.cc)
-
 set(LIBS ${Boost_FILESYSTEM_LIBRARY} ${Boost_SYSTEM_LIBRARY}
          mpdclient tag)
 target_link_libraries(mvmusic PRIVATE ${LIBS})
-target_link_libraries(mvmusic_tests PRIVATE ${LIBS})
+
+if((DEFINED MVMUSIC_BUILD_TESTS) OR
+   (NOT ("Release" STREQUAL "${CMAKE_BUILD_TYPE}")))
+  add_executable(mvmusic_tests ${files}
+    ${MVMUSIC_SOURCE_DIR}/test/test_consume_path.cc
+    ${MVMUSIC_SOURCE_DIR}/test/test_main.cc)
+  target_link_libraries(mvmusic_tests PRIVATE ${LIBS})
+endif()
 
 install(TARGETS mvmusic RUNTIME DESTINATION bin)
 
