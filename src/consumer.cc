@@ -91,7 +91,7 @@ void Consumer::_sorted_insert_song_(const std::string& str) {
     }
 }
 
-Consumer::~Consumer() {
+Consumer::~Consumer() noexcept(false) {
     if (_write_to_file_) {
         if (!NONO) {
             if (auto file = ofstream(_playlist_file_.c_str())) {

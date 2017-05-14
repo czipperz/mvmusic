@@ -46,7 +46,7 @@ public:
      * @brief If @c _write_to_file_, then dump @c _playlist_lines_
      * into @c _playlist_file_.
      */
-    ~Consumer();
+    ~Consumer() noexcept(false);
 
     /**
      * @brief "compiles" a music file.
